@@ -1,38 +1,438 @@
-.App {
+body {
+  margin: 0;
+  padding: 0;
+  transition: all 0.3s ease; /* Smooth theme transitions */
+  background-color: #c2c2c2; /* Neutral gray background for depth */
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255, 178, 171, 0.15), /* Brighter UC Bearcat red, transparent */
+    rgba(249, 149, 140, 0.15) 20px,
+    rgba(255, 255, 255, 0) 20px,
+    rgba(255, 255, 255, 0) 40px
+  );
+  background-size: 200px 200px; /* Adjust for spacing of lines */
+  font-family: 'Chalkboard SE', 'Comic Sans MS', 'Arial', sans-serif; /* Quirky, playful default */
+  color: #fff; /* Default text color for dark mode */
+}
+
+/* Light mode body background */
+body.light-mode {
+  background-color: #f5f5f5; /* Bright light background */
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255, 111, 97, 0.1), /* Subtle UC Bearcat red, transparent */
+    rgba(255, 111, 97, 0.1) 20px,
+    rgba(0, 0, 0, 0) 20px,
+    rgba(0, 0, 0, 0) 40px
+  );
+  color: #333; /* Default text color for light mode */
+}
+
+/* Sassy text overlay for both modes */
+body::before {
+  content: '"The only chatbot that roasts you for free!" "Smarter than your ex, wittier than your professor." "Come for answers, stay for the attitude."';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(255, 111, 97, 0.08) 10px, /* Slightly brighter red for sass */
+    rgba(255, 111, 97, 0.08) 20px
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-family: 'Chalkboard SE', 'Comic Sans MS', sans-serif;
+  font-size: 16px; /* Bigger, bolder sass */
+  line-height: 24px;
   text-align: center;
+  z-index: -1; /* Behind content */
+  pointer-events: none; /* Non-interactive */
+  animation: sassyFloat 10s infinite ease-in-out; /* Subtle float animation */
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Light mode text overlay */
+body.light-mode::before {
+  color: rgba(255, 111, 97, 0.12); /* Brighter red in light mode */
+  -webkit-text-fill-color: rgba(255, 111, 97, 0.12);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+@keyframes sassyFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.App {
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 20px; /* Rounder corners */
+  box-shadow: 0 0 30px rgba(255, 111, 97, 0.4); /* Stronger shadow */
+  position: relative;
+  transition: all 0.3s ease;
+  overflow: hidden; /* Prevent overflow from animations */
+}
+
+.App.dark-mode {
+  background: linear-gradient(135deg, #2a2a2a, #3a3a3a); /* Deep dark gradient */
+  color: #f5f1f1;
+}
+
+.App.light-mode {
+  background: linear-gradient(135deg, #f5f5f5, #ffffff); /* Bright light gradient */
+  color: #333;
+}
+
+.app-header {
+  text-align: center;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+  animation: chillFadeIn 1s ease-in;
+}
+
+h1 {
+  color: #ff6f61; /* UC Bearcat red */
+  font-size: 3.5em; /* Bigger, bolder */
+  font-weight: bold;
+  text-shadow: 3px 3px 8px rgba(255, 111, 97, 0.6); /* Stronger shadow */
+  animation: bounce 2s infinite ease-in-out;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.bearcat-avatar {
+  width: 180px; /* Larger avatar */
+  height: 180px;
+  border-radius: 50%;
+  object-fit:fill; /* Better fit for the image */
+  border: 6px solid #ff6f61; /* Thicker border */
+  margin: 15px auto;
+  animation: spin 4s linear infinite, glow 3s infinite alternate; /* Add glow */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+@keyframes glow {
+  0% { box-shadow: 0 0 10px rgba(255, 111, 97, 0.5); }
+  100% { box-shadow: 0 0 20px rgba(255, 111, 97, 1); }
+}
+
+.tagline {
+  color: #b3b3b3;
+  font-size: 1.3em; /* Slightly larger */
+  font-style: italic;
+  margin-top: 15px;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.theme-toggle {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.theme-toggle input {
+  display: none; /* Hide the checkbox */
+}
+
+.toggle-icon {
+  width: 50px; /* Larger toggle */
+  height: 25px;
+  background: linear-gradient(90deg, #ff6f61, #e65a50); /* Sassy gradient */
+  border-radius: 25px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-icon::after {
+  content: '';
+  position: absolute;
+  width: 20px; /* Larger toggle knob */
+  height: 20px;
+  left: 2.5px;
+  top: 2.5px;
+  background: linear-gradient(45deg, #fff, #f0f0f0); /* Gradient for shine */
+  border-radius: 50%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-icon .moon, .toggle-icon .sun {
+  position: absolute;
+  font-size: 20px; /* Larger icons */
+  line-height: 25px;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.toggle-icon .moon {
+  left: 10px;
+  opacity: 1;
+  text-shadow: 0 0 5px #000;
+}
+
+.toggle-icon .sun {
+  right: 10px;
+  opacity: 0;
+  text-shadow: 0 0 5px #ff6f61;
+}
+
+.theme-toggle input:checked + .toggle-icon {
+  background: linear-gradient(90deg, #e65a50, #ff6f61);
+}
+
+.theme-toggle input:checked + .toggle-icon::after {
+  transform: translateX(25px); /* Match larger width */
+}
+
+.theme-toggle input:checked + .toggle-icon .moon {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+.theme-toggle input:checked + .toggle-icon .sun {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.chat-container {
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 15px;
+  transition: all 0.3s ease;
+}
+
+.chat-container.dark-mode {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.chat-container.light-mode {
+  background: rgba(255, 111, 97, 0.1);
+}
+
+.welcome-message {
+  text-align: center;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  font-size: 1.1em;
+  color: #e65a50;
+  font-style: italic;
+  animation: chillFadeIn 1.5s ease-in;
+  transition: all 0.3s ease;
+}
+
+.welcome-message.dark-mode {
+  background: rgba(255, 111, 97, 0.1);
+}
+
+.welcome-message.light-mode {
+  background: rgba(255, 111, 97, 0.05);
+  color: #666;
+}
+
+.chat-window {
+  height: 600px;
+  overflow-y: auto;
+  border-radius: 15px;
+  padding: 20px;
+  margin: 20px 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  gap: 15px;
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.3);
+  animation: chillPulse 3s infinite ease-in-out;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2));
+  transition: all 0.3s ease;
 }
 
-.App-link {
-  color: #61dafb;
+.chat-window.dark-mode {
+  background: linear-gradient(135deg, #333, #444);
+  box-shadow: inset 0 0 15px rgba(255, 111, 97, 0.3);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.chat-window.light-mode {
+  background: linear-gradient(135deg, #f0f0f0, #ffffff);
+  box-shadow: inset 0 0 15px rgba(255, 111, 97, 0.2);
+}
+
+.loading {
+  text-align: center;
+  padding: 10px;
+  color: #b3b3b3;
+  animation: pulse 1.5s infinite ease-in-out;
+  font-size: 1em;
+}
+
+.loading.dark-mode {
+  color: #888;
+}
+
+.loading.light-mode {
+  color: #666;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.7; }
+  50% { opacity: 1; transform: scale(1.05); }
+  100% { opacity: 0.7; }
+}
+
+.message {
+  max-width: 70%;
+  margin: 10px 0;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.message.user {
+  align-self: flex-end; /* User messages on the right */
+  background: linear-gradient(45deg, #ff6f61, #e65a50); /* Sassy gradient for user */
+  border-radius: 30px;
+  color: #fff;
+}
+
+.message.bearcat {
+  align-self: flex-start; /* Bearcat messages on the left */
+  background: linear-gradient(45deg, #444, #555); /* Dark gradient for Bearcat */
+  border-radius: 30px;
+  color: #f5f1f1;
+}
+
+.message-content {
+  padding: 15px;
+  border-radius: 30px; /* More pronounced curved edges for speech-bubble look */
+  position: relative;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Stronger shadow */
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.message-content:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.message-content p {
+  margin: 0;
+  font-size: 1.2em; /* Slightly larger text */
+  line-height: 1.6;
+  font-family: 'Chalkboard SE', 'Comic Sans MS', sans-serif;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+  word-wrap: break-word; /* Prevent text overflow */
+}
+
+.gif {
+  max-width: 100%;
+  border-radius: 10px; /* Rounder GIFs */
+  margin-top: 10px;
+  animation: bounce 1.5s infinite ease-in-out, rotate 4s linear infinite; /* Add rotation */
+  transition: all 0.3s ease;
+}
+
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.bounce {
+  animation: bounce 1.5s infinite ease-in-out;
+}
+
+.time {
+  font-size: 0.9em; /* Slightly larger */
+  margin-top: 8px;
+  display: block;
+  opacity: 0.8;
+  font-style: italic;
+  transition: color 0.3s ease;
+}
+
+.time.dark-mode {
+  color: #888;
+}
+
+.time.light-mode {
+  color: #666;
+}
+
+.chat-input {
+  display: flex;
+  gap: 15px;
+  padding: 15px;
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(255, 111, 97, 0.4);
+  animation: chillPulse 3s infinite ease-in-out;
+ /* Dark gradient for input */
+  transition: all 0.3s ease;
+}
+
+.chat-input.light-mode {
+  box-shadow: 0 0 15px rgba(255, 111, 97, 0.3);
+}
+
+.funky-input {
+  padding: 14px;
+  flex: 1;
+  border: 3px solid #ff6f61; /* Thicker border */
+  border-radius: 25px; /* Rounder input */
+  font-size: 1.1em; /* Larger text */
+  transition: all 0.3s ease, box-shadow 0.3s ease;
+}
+
+.funky-input.dark-mode {
+  background: linear-gradient(45deg, #444, #555);
+  color: #fff;
+}
+
+.funky-input.light-mode {
+  background: linear-gradient(45deg, #fff, #f0f0f0);
+  color: #333;
+}
+
+.funky-input:focus {
+  outline: none;
+  box-shadow: 0 0 15px rgba(255, 138, 122, 0.6); /* Brighter focus */
+  border-color: #e65a50;
+}
+
+.funky-button {
+  padding: 14px 30px; /* Larger button */
+  border: none;
+  border-radius: 25px; /* Rounder button */
+  background: linear-gradient(45deg, #ff6f61, #e65a50); /* Sassy gradient */
+  color: #fff;
+  font-family: 'Chalkboard SE', 'Comic Sans MS', sans-serif;
+  font-size: 1.2em; /* Larger text */
+  cursor: pointer;
+  transition: all 0.3s ease, box-shadow 0.3s ease;
+}
+
+.funky-button:hover {
+  background: linear-gradient(45deg, #e65a50, #ff6f61);
+  transform: scale(1.1);
+  box-shadow: 0 5px 15px rgba(255, 111, 97, 0.6);
+}
+
+.funky-button:active {
+  transform: scale(0.95);
+  box-shadow: 0 2px 5px rgba(255, 111, 97, 0.4);
 }
